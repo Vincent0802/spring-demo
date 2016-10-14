@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright 2015-2016 the original author or authors. Licensed under the 
+	Apache License, Version 2.0 (the "License"); you may not use this file except 
+	in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+	Unless required by applicable law or agreed to in writing, software distributed 
+	under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
+	OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
+	the specific language governing permissions and limitations under the License. -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyrus.demo.domain.User">
+	<resultMap id="User" type="com.cyrus.demo.domain.User">
+		<id property="id" column="ID" jdbcType="INTEGER" />
+		<result property="name" column="NAME" jdbcType="VARCHAR" />
+		<result property="password" column="PASSWORD" jdbcType="VARCHAR" />
+		<collection property="roles" column="ROLE_ID" javaType="ArrayList"
+			ofType="Role">
+			<id property="id" column="ROLE_ID" jdbcType="INTEGER" />
+			<result property="rolename" column="ROLENAME" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+	<sql id="userColumns">
+		NAME,PASSWORD
+	</sql>
+	<sql id="userTab">
+		T_USER
+	</sql>
+
+	<sql id="RoleTab">
+		T_USER_ROLE
+	</sql>
+
+	<sql id="RoleColumns">
+		ROLEID , USERID
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<if test="filters != null">
+				<if test="filters.name != null">
+	         		AND (
+	         			NAME LIKE CONCAT('%' , #{filters.name} , '%') 
+	         		)
+	    		</if>
+    		</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSort">
+		<if test="sort != null and sort.size() > 0">
+			ORDER BY
+			<foreach collection="sort" item="item" separator=",">
+				${item.field} ${item.dir}
+			</foreach>
+		</if>
+	</sql>
+	
+	<select id="getByPK" parameterType="Long">
+		SELECT * FROM <include refid="userTab"/> 
+		WHERE ID = #{id}
+	</select>
+	
+	<select id="getByName" parameterType="String" resultType="User">
+		SELECT * FROM <include refid="userTab"/> 
+		WHERE NAME = #{name}
+	</select>
+	
+	<insert id="add" parameterType="User">
+		INSERT INTO <include refid="userTab"/> 
+		(<include refid="userColumns"/>)
+		VALUES(
+			#{name,jdbcType=VARCHAR},
+			#{password,jdbcType=VARCHAR}
+		)
+	</insert>
+
+</mapper>
