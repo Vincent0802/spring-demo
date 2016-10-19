@@ -1,5 +1,7 @@
 package com.cyrus.demo.account.web;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,12 @@ public class RoleController {
 	public int add(@RequestBody Role role) {
 		logger.info("Role Name = " + role.getRolename());
 		return roleService.add(role);
+	}
+	
+	@RequestMapping(value = "list" ,method = RequestMethod.POST)
+	@ResponseBody
+	public List<Role> getList(@RequestBody List<Role> roles) {
+		return roleService.getList();
 	}
 	
 }

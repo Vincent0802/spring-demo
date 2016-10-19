@@ -8,23 +8,23 @@ import com.cyrus.demo.base.module.account.service.AccountRestService;
 import com.cyrus.demo.domain.Role;
 
 @Service
-public class RoleService extends AccountRestService{
+public class DSWService extends AccountRestService{
 
-	public Role getByPK(Long id) {
-		return getForObject("/role/get/" + id, Role.class);
+	public Role getDSW(Long id) {
+		return getForObject("/dsw/get/" + id, Role.class);
 	}
 	
 	public Role getRole(Role role) {
-		return postForObject("/role/get-role" ,role , Role.class);
+		return postForObject("/dsw/get-role" ,role , Role.class);
 	}
 	
 	public int add(Role role) {
-		return postForObject("/role/add" ,role , int.class);
+		return postForObject("/dsw/add" ,role , int.class);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Role> getList(List<Role> roles) {
-		return postForObject("/role/list" ,roles , List.class);
+		return postForObject("/dsw/list" ,roles , List.class);
 	}
 	
 }

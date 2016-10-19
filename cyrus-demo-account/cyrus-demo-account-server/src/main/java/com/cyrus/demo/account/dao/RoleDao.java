@@ -13,7 +13,6 @@ public class RoleDao extends BaseDao{
 		return Role.class.getName();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Role getByPK(Long id) {
 		return getByPK(id);
 	}

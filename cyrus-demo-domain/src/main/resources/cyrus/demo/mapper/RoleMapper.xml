@@ -11,7 +11,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cyrus.demo.domain.Role">
 	<resultMap id="Role" type="com.cyrus.demo.domain.Role">
-		<id property="id" column="ID" jdbcType="INTEGER" />
+		<id property="id" column="ROLEID" jdbcType="INTEGER" />
 		<result property="rolename" column="ROLENAME" jdbcType="VARCHAR" />
 		<collection property="users" column="USERID" javaType="ArrayList"
 			ofType="User">
@@ -41,7 +41,8 @@
 			<if test="filters != null">
 				<if test="filters.rolename != null">
 					AND (
-					ROLENAME LIKE CONCAT('%' , #{filters.rolename} , '%')
+					ROLENAME LIKE CONCAT('%' , #{filters.rolename} ,
+					'%')
 					)
 				</if>
 			</if>
@@ -56,22 +57,32 @@
 			</foreach>
 		</if>
 	</sql>
-	
-	<select id="getByPK" parameterType="Long">
-		SELECT * FROM <include refid="roleTab"/> 
-		WHERE ID = #{id}
+
+	<select id="getDSW" parameterType="Long" resultMap="Role">
+		SELECT * FROM
+		<include refid="roleTab" />
+		WHERE ROLEID = #{id}
 	</select>
-	
+
+	<select id="getAll" resultMap="Role">
+		SELECT * FROM
+		<include refid="roleTab" />
+	</select>
+
 	<select id="getByName" parameterType="Role">
-		SELECT * FROM <include refid="roleTab"/> 
+		SELECT * FROM
+		<include refid="roleTab" />
 		WHERE ROLENAME = #{rolename}
 	</select>
-	
+
 	<insert id="add" parameterType="Role">
-		INSERT INTO <include refid="roleTab"/> 
-		(<include refid="rolecolumns"/>)
+		INSERT INTO
+		<include refid="roleTab" />
+		(
+		<include refid="rolecolumns" />
+		)
 		VALUES(
-			#{rolename,jdbcType=VARCHAR}
+		#{rolename,jdbcType=VARCHAR}
 		)
 	</insert>
 
