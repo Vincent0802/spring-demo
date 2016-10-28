@@ -35,7 +35,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 
 	// 数据源
 	private DataSource defaultDataSource;
-	private Map<String, DataSource> customDataSources = new HashMap<>();
+	private Map<String, DataSource> customDataSources = new HashMap<String, DataSource>();
 
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
@@ -115,7 +115,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 	private void initDefaultDataSource(Environment env) {
 		// 读取主数据源
 		RelaxedPropertyResolver propertyResolver = new RelaxedPropertyResolver(env, "spring.datasource.");
-		Map<String, Object> dsMap = new HashMap<>();
+		Map<String, Object> dsMap = new HashMap<String, Object>();
 		dsMap.put("type", propertyResolver.getProperty("type"));
 		dsMap.put("driverClassName", propertyResolver.getProperty("driverClassName"));
 		dsMap.put("url", propertyResolver.getProperty("url"));
@@ -145,7 +145,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 		dataBinder.setIgnoreUnknownFields(true);// true
 		if (dataSourcePropertyValues == null) {
 			Map<String, Object> rpr = new RelaxedPropertyResolver(env, "spring.datasource").getSubProperties(".");
-			Map<String, Object> values = new HashMap<>(rpr);
+			Map<String, Object> values = new HashMap<String, Object>(rpr);
 			// 排除已经设置的属性
 			values.remove("type");
 			values.remove("driverClassName");

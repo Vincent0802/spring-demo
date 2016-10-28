@@ -2,7 +2,7 @@ package com.cyrus.demo.account.api.service;
 
 import org.springframework.stereotype.Service;
 
-import com.cyrus.demo.base.module.account.service.AccountRestService;
+import com.cyrus.demo.base.module.rest.AccountRestService;
 import com.cyrus.demo.domain.User;
 
 @Service

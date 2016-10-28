@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +30,13 @@ public class JdbcTemplateDao {
 	@Autowired
 	private static Logger logger = LoggerFactory.getLogger(JdbcTemplateDao.class);
 
-	public Object query(String sql, DataSourceProxy dataSourceProxy) {
+	public Object query(String sql, DataSource dataSource) {
 		Connection conn = null;
 		Statement stat = null;
 		ResultSet resultSet = null;
 		Role role = new Role();
 		try {
-			conn = dataSourceProxy.getConnection();
+			conn = dataSource.getConnection();
 			// System.out.println("得到了数据库连接");
 		} catch (SQLException e) {
 			e.printStackTrace();

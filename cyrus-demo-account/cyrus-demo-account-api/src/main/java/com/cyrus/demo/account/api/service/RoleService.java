@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.cyrus.demo.base.module.account.service.AccountRestService;
+import com.cyrus.demo.base.module.rest.AccountRestService;
 import com.cyrus.demo.domain.Role;
 
 @Service
