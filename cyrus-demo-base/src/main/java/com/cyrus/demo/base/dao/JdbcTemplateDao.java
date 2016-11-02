@@ -11,10 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.jdbc.core.RowMapper;
 
-import com.cyrus.demo.base.datasource.DataSourceProxy;
-import com.cyrus.demo.domain.Role;
+import com.cyrus.demo.domain.DataSourceConfig;
 
 public class JdbcTemplateDao {
 
@@ -30,36 +29,63 @@ public class JdbcTemplateDao {
 	@Autowired
 	private static Logger logger = LoggerFactory.getLogger(JdbcTemplateDao.class);
 
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	/**
+	 * 根据DB的id查询数据源
+	 * 
+	 * @param id
+	 *            DB的id
+	 * @return DataSourceConfig
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public DataSourceConfig getOneDataSourceConfig(Long id) {
+		String sql = "SELECT * FROM DATASOURCE WHERE ID=" + id;
+        return (DataSourceConfig) jdbcTemplate.queryForObject(sql, new RowMapper(){
+
+            @Override
+            public DataSourceConfig mapRow(ResultSet rs, int rowNum) throws SQLException {
+            	DataSourceConfig dsc = new DataSourceConfig();
+                dsc.setDriver(rs.getString("DRIVER"));
+                dsc.setUrl(rs.getString("URL"));
+                return dsc;
+            }
+
+        });
+	}
+
 	public Object query(String sql, DataSource dataSource) {
 		Connection conn = null;
 		Statement stat = null;
 		ResultSet resultSet = null;
-		Role role = new Role();
+		DataSourceConfig dsc = new DataSourceConfig();
 		try {
 			conn = dataSource.getConnection();
-			// System.out.println("得到了数据库连接");
+			System.out.println("得到了数据库连接");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			logger.error("获取数据库连接失败");
+			System.out.println("获取数据库连接失败");
 			throw new RuntimeException("获取数据库连接失败");
 		}
 		try {
 			stat = conn.createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			logger.error("Statement创建失败");
+			System.out.println("Statement创建失败");
 			// 放回连接
 			throw new RuntimeException("Statement创建失败");
 		}
 		try {
 			resultSet = stat.executeQuery(sql);
 			while (resultSet.next()) {
-				String name = resultSet.getString("ROLENAME"); 
-				role.setRolename(name);
+				String url = resultSet.getString("URL");
+				String driver = resultSet.getString("DRIVER");
+				dsc.setUrl(url);
+				dsc.setDriver(driver);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			logger.error("查询数据库失败");
+			System.out.println("查询数据库失败");
 			// 放回连接
 			throw new RuntimeException("查询数据库失败");
 		}
@@ -81,6 +107,7 @@ public class JdbcTemplateDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return role;
+		System.out.println("获取数据......");
+		return dsc;
 	}
 }

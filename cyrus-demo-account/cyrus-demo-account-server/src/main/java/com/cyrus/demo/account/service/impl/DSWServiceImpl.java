@@ -5,6 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.cyrus.demo.account.dao.DSWDao;
@@ -20,6 +21,7 @@ public class DSWServiceImpl implements DSWService {
 	private DSWDao dswDao;
 
 	@Override
+	@Cacheable
 	public Role getDSW(Long id) {
 		return dswDao.getDSW(id);
 	}

@@ -49,6 +49,12 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>cyrus-demo-user</finalName>

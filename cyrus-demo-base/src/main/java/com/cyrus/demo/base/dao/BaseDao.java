@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Repository
 public abstract class BaseDao {
 
-
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
